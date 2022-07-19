@@ -36,11 +36,19 @@ export default {
   computed: {},
 
   methods: {
+    //这边封装的这几个方法前面最好要加上这个this.scroll && ,因为他有可能this.scroll对象还没有值,他们就调用了这个方法,就会报错
     scrollTo(x,y,time=300){
-      this.scroll.scrollTo(x,y,time)
+      this.scroll && this.scroll.scrollTo(x,y,time)
     },
     finishPullUp(){
-      this.scroll.finishPullUp();
+      this.scroll && this.scroll.finishPullUp();
+    },
+    refresh(){
+      // console.log('----');
+      this.scroll && this.scroll.refresh()
+    },
+    getScrollY(){
+      return this.scroll?this.scroll.y:0;
     }
   },
 
@@ -60,14 +68,20 @@ export default {
       pullUpLoad:this.pullUpLoad
     })
     // 2.监听滚动的位置
-    this.scroll.on('scroll',(position)=>{
+    if(this.probeType===2 ||this.probeType===3){
+      this.scroll.on('scroll',(position)=>{
       // console.log(position);
       this.$emit('scroll',position);
-    })
+      })
+    }
+    
     //3.监听上拉加载事件
-    this.scroll.on('pullingUp',()=>{
+    if(this.pullUpLoad){
+      this.scroll.on('pullingUp',()=>{
       this.$emit('pullingUp')
-    })
+      })
+    }
+    
   }
 }
 
