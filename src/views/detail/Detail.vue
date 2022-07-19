@@ -17,6 +17,8 @@
     <back-top @click.native="backClick" v-show="isShowBackTop"/>
 
     <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
+
+    <!-- <toast :message="message" :isShow="isShow"></toast> -->
   </div>
 </template>
 
@@ -32,6 +34,7 @@ import DetailBottomBar from './childComps/DetailBottomBar'
 
 import Scroll from 'components/common/scroll/Scroll'
 import GoodsList from 'components/content/goods/GoodsList'
+// import Toast from 'components/common/toast/Toast'
 
 
 import { getDetail, getRecommend, Goods, Shop, GoodsParam } from 'network/detail'
@@ -54,6 +57,8 @@ export default {
       themeTopYs: [],
       currentIndex:0,
       // isShowBackTop:false 弄到混入文件去了
+      // message:'',
+      // isShow:false
     };
   },
 
@@ -67,7 +72,8 @@ export default {
     DetailCommentInfo,
     DetailBottomBar,
     Scroll,
-    GoodsList
+    GoodsList,
+    // Toast
   },
 
   computed: {},
@@ -138,7 +144,15 @@ export default {
       // 这个是使用mutations来实现的,但是因为里面有判断逻辑,所以又给写到actions里面去了,所以这边注释掉
       // this.$store.commit('addCart',product)
       // 写在actions的使用方法
-      this.$store.dispatch('addCart',product)
+      this.$store.dispatch('addCart',product).then(res=>{
+        // this.isShow=true
+        // this.message=res
+        // setTimeout(()=>{
+        //   this.isShow=false
+        //   this.message=''
+        // },1500)
+        this.$toast.show(res,1500)
+      })
     }
   },
 

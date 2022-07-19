@@ -2,7 +2,8 @@
 <template>
   <div class="goods-item" @click="itemCick">
     <!-- @load="imageLoad"这个是用来监听图片加载完成的事件的 -->
-    <img :src="showImage" alt="" @load="imageLoad">
+    <!-- <img :src="showImage" alt="" @load="imageLoad"> 这个是没有使用图片懒加载的-->
+    <img v-lazy="showImage" alt="" @load="imageLoad" :key="showImage"><!-- 这个是使用了懒加载的,而且要绑定一个key,不然点新款或精选不会更新 -->
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
